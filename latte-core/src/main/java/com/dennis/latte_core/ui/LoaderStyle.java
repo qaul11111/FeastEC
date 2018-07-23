@@ -29,5 +29,4 @@ public enum LoaderStyle {
     PacmanIndicator,
     BallGridBeatIndicator,
     SemiCircleSpinIndicator
-
 }
