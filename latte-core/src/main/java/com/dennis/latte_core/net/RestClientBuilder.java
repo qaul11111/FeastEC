@@ -20,6 +20,9 @@ public class RestClientBuilder {
     private String mUrl = null;
     private static final Map<String, Object> PARAMS = RestCreator.getParams();
     private IRequest mRequest = null;
+    private String mDownloadDir = null;
+    private String mExtension = null;
+    private String mName = null;
     private ISuccess mSuccess = null;
     private IFailure mFailure = null;
     private IError mError = null;
@@ -66,6 +69,21 @@ public class RestClientBuilder {
         return this;
     }
 
+    public final RestClientBuilder dir(String dir) {
+        this.mDownloadDir = dir;
+        return this;
+    }
+
+    public final RestClientBuilder extension(String extension) {
+        this.mExtension = extension;
+        return this;
+    }
+
+    public final RestClientBuilder name(String name) {
+        this.mName = name;
+        return this;
+    }
+
     public final RestClientBuilder success(ISuccess iSuccess) {
         this.mSuccess = iSuccess;
         return this;
@@ -94,7 +112,7 @@ public class RestClientBuilder {
     }
 
     public final RestClient build() {
-        return new RestClient(mUrl, PARAMS, mRequest, mSuccess, mFailure, mError, mBody, mLoaderStyle, mFile, mContext);
+        return new RestClient(mUrl, PARAMS, mRequest, mDownloadDir, mExtension, mName, mSuccess, mFailure, mError, mBody, mLoaderStyle, mFile, mContext);
     }
 
 }

@@ -7,6 +7,7 @@ import com.dennis.latte_core.net.callback.IFailure;
 import com.dennis.latte_core.net.callback.IRequest;
 import com.dennis.latte_core.net.callback.ISuccess;
 import com.dennis.latte_core.net.callback.RequestCallbacks;
+import com.dennis.latte_core.net.download.DownloadHandler;
 import com.dennis.latte_core.ui.LatteLoader;
 import com.dennis.latte_core.ui.LoaderStyle;
 
@@ -19,12 +20,16 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.http.HTTP;
 
 public class RestClient {
 
     private final String URL;
     private static final WeakHashMap<String, Object> PARAMS = RestCreator.getParams();
     private final IRequest REQUEST;
+    private final String DOWNLOAD_DIR;
+    private final String EXTENSION;
+    private final String NAME;
     private final ISuccess SUCCESS;
     private final IFailure FAILURE;
     private final IError ERROR;
@@ -36,6 +41,9 @@ public class RestClient {
     public RestClient(String url,
                       Map<String, Object> params,
                       IRequest request,
+                      String downloadDir,
+                      String extension,
+                      String name,
                       ISuccess success,
                       IFailure failure,
                       IError error,
@@ -46,6 +54,9 @@ public class RestClient {
         this.URL = url;
         PARAMS.putAll(params);
         this.REQUEST = request;
+        this.DOWNLOAD_DIR = downloadDir;
+        this.EXTENSION = extension;
+        this.NAME = name;
         this.SUCCESS = success;
         this.FAILURE = failure;
         this.ERROR = error;
@@ -144,5 +155,13 @@ public class RestClient {
 
     public final void delete() {
         request(HttpMethod.DELETE);
+    }
+
+    public final void upload() {
+        request(HttpMethod.UPLOAD);
+    }
+
+    public final void download() {
+        new DownloadHandler(URL, REQUEST, DOWNLOAD_DIR, EXTENSION, NAME, SUCCESS, FAILURE, ERROR).handleDownload();
     }
 }
